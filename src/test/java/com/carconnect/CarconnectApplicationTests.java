@@ -1,4 +1,4 @@
-package com.carconnect.carconnect;
+package com.carconnect;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
