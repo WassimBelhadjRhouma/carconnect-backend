@@ -1,6 +1,10 @@
 package com.carconnect.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -12,12 +16,29 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @NotBlank(message = "First name is mandatory")
+    @Size(max = 50, message = "First name must not exceed 50 characters")
+    private String firstName;
+
+    @NotBlank(message = "Last name is mandatory")
+    @Size(max = 50, message = "Last name must not exceed 50 characters")
+    private String lastName;
+
+    @Column(unique = true)
+    @Email(message = "Invalid email address")
+    @NotBlank(message = "Email is mandatory")
     private String email;
+
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
+
     private LocalDate birthDate;
+
     private String role;
+
     private String status;
+
     private LocalDate createdAt;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
@@ -49,12 +70,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -160,5 +189,4 @@ public class User {
     public void setReportChecksAfterRenting(Set<ReportCheckAfterRenting> reportChecksAfterRenting) {
         this.reportChecksAfterRenting = reportChecksAfterRenting;
     }
-// Getters, setters, and other methods
 }
