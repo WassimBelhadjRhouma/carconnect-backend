@@ -1,10 +1,17 @@
 package com.carconnect.repositories;
 
-import com.carconnect.models.Car;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import com.carconnect.dto.projection.CarProjection;
+import com.carconnect.models.Car;
 
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
-    // Additional custom queries (if needed) can be added here
+@Query("SELECT c FROM Car c")
+    List<CarProjection> findAllProjectedBy();
+    
 }

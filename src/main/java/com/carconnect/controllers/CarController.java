@@ -1,12 +1,21 @@
 package com.carconnect.controllers;
 
-import com.carconnect.models.Car;
-import com.carconnect.services.CarService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.carconnect.dto.projection.CarProjection;
+import com.carconnect.models.Car;
+import com.carconnect.services.CarService;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -19,7 +28,7 @@ public class CarController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Car>> getAllCars() {
+    public ResponseEntity<List<CarProjection>> getAllCars() {
         return ResponseEntity.ok(carService.getAllCars());
     }
 

@@ -1,10 +1,12 @@
 package com.carconnect.services;
 
-import com.carconnect.models.Car;
 import java.util.List;
 
+import com.carconnect.dto.projection.CarProjection;
+import com.carconnect.models.Car;
+
 public interface CarService {
-    List<Car> getAllCars();
+    List<CarProjection> getAllCars();
     Car getCarById(Long id);
     Car createCar(Car car);
     Car updateCar(Long id, Car car);

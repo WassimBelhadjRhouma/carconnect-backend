@@ -1,10 +1,13 @@
 package com.carconnect.services;
 
-import com.carconnect.models.Car;
-import com.carconnect.repositories.CarRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import com.carconnect.dto.projection.CarProjection;
+import com.carconnect.models.Car;
+import com.carconnect.repositories.CarRepository;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -17,8 +20,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> getAllCars() {
-        return carRepository.findAll();
+    public List<CarProjection> getAllCars() {
+        return carRepository.findAllProjectedBy();
     }
 
     @Override
