@@ -12,9 +12,21 @@ import com.carconnect.models.Car;
 
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
-@Query("SELECT c FROM Car c")
-    List<CarProjection> findAllProjectedBy();
-    
+
   @Query("SELECT c FROM Car c WHERE c.id = :id")
     CarProjection findCarById(@Param("id") Long id);   
+
+    @Query("SELECT c FROM Car c WHERE " +
+           "(:make IS NULL OR c.make = :make) AND " +
+           "(:model IS NULL OR c.model = :model) AND " +
+           "(:drivingMode IS NULL OR c.drivingMode = :drivingMode) AND " +
+           "(:minPrice IS NULL OR c.pricePerDay >= :minPrice) AND " +
+           "(:maxPrice IS NULL OR c.pricePerDay <= :maxPrice)")
+    List<CarProjection> findCarsWithFilters(
+            @Param("make") String make,
+            @Param("model") String model,
+            @Param("drivingMode") String drivingMode,
+            @Param("minPrice") Double minPrice,
+            @Param("maxPrice") Double maxPrice);
+
 }

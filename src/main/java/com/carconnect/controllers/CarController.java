@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.carconnect.dto.filters.CarFilterDTO;
 import com.carconnect.dto.projection.CarProjection;
 import com.carconnect.models.Car;
 import com.carconnect.services.CarService;
@@ -29,8 +30,8 @@ public class CarController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CarProjection>> getAllCars() {
-        return ResponseEntity.ok(carService.getAllCars());
+    public ResponseEntity<List<CarProjection>> getFilteredCars(@RequestBody CarFilterDTO filter) {
+        return ResponseEntity.ok(carService.getFilteredCars(filter.getMake(), filter.getModel(), filter.getDrivingMode(),filter.getMinPrice(), filter.getMaxPrice()));
     }
 
     @GetMapping("/{id}")

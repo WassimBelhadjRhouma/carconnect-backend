@@ -21,8 +21,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarProjection> getAllCars() {
-        return carRepository.findAllProjectedBy();
+    public List<CarProjection> getFilteredCars(String make, String model, String drivingMode, Double minPrice, Double maxPrice) {
+         return carRepository.findCarsWithFilters(make, model, drivingMode, minPrice, maxPrice);
     }
 
     @Override
