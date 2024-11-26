@@ -1,6 +1,7 @@
 package com.carconnect.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car getCarById(Long id) {
-        return carRepository.findById(id).orElse(null);
+    public CarProjection getCarById(Long id) {
+        return carRepository.findCarById(id);
     }
 
     @Override
@@ -34,16 +35,46 @@ public class CarServiceImpl implements CarService {
         return carRepository.save(car);
     }
 
-    @Override
-    public Car updateCar(Long id, Car car) {
-        if (carRepository.existsById(id)) {
-            return carRepository.save(car);
-        }
-        return null;
-    }
 
     @Override
     public void deleteCar(Long id) {
         carRepository.deleteById(id);
+    }
+
+    @Override
+    public CarProjection updateCarPartially(Long id, Map<String, Object> updates) {
+        Car car = carRepository.findById(id)
+                .orElseThrow();
+
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "title":
+                    car.setTitle((String) value);
+                    break;
+                case "make":
+                    car.setMake((String) value);
+                    break;
+                case "model":
+                    car.setModel((String) value);
+                    break;
+                case "year":
+                    car.setYear((int) value);
+                    break;
+                case "pricePerDay":
+                    car.setPricePerDay(Double.valueOf(value.toString()));
+                    break;
+                case "postalCode":
+                    car.setPostalCode((int) value);
+                    break;
+                case "streetAddress":
+                    car.setStreetAddress((String) value);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Field " + key + " is not valid for update");
+            }
+        });
+
+        carRepository.save(car);
+        return carRepository.findCarById(id); 
     }
 }

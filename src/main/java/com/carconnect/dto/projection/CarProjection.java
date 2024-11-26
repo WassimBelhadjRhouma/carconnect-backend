@@ -21,3 +21,4 @@ public interface CarProjection{
         Long getId();
     }
 }
+
