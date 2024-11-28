@@ -29,9 +29,9 @@ public class CarController {
         this.carService = carService;
     }
 
-    @GetMapping
+    @PostMapping("/filter")
     public ResponseEntity<List<CarProjection>> getFilteredCars(@RequestBody CarFilterDTO filter) {
-        return ResponseEntity.ok(carService.getFilteredCars(filter.getMake(), filter.getModel(), filter.getDrivingMode(),filter.getMinPrice(), filter.getMaxPrice()));
+        return ResponseEntity.ok(carService.getFilteredCars(filter.getMake(),filter.getFuelType(), filter.getModel(), filter.getDrivingMode(),filter.getMinPrice(), filter.getMaxPrice()));
     }
 
     @GetMapping("/{id}")

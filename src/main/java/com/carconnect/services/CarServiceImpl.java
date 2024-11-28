@@ -21,8 +21,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarProjection> getFilteredCars(String make, String model, String drivingMode, Double minPrice, Double maxPrice) {
-         return carRepository.findCarsWithFilters(make, model, drivingMode, minPrice, maxPrice);
+    public List<CarProjection> getFilteredCars(String make,String fuelType, String model, String drivingMode, Double minPrice, Double maxPrice) {
+         return carRepository.findCarsWithFilters(make,fuelType, model, drivingMode, minPrice, maxPrice);
     }
 
     @Override
@@ -48,8 +48,14 @@ public class CarServiceImpl implements CarService {
 
         updates.forEach((key, value) -> {
             switch (key) {
+                case "pricePerDay":
+                car.setPricePerDay(Double.valueOf(value.toString()));
+                break;
                 case "title":
                     car.setTitle((String) value);
+                    break;
+                    case "description":
+                    car.setDescription((String) value);
                     break;
                 case "make":
                     car.setMake((String) value);
@@ -59,9 +65,6 @@ public class CarServiceImpl implements CarService {
                     break;
                 case "year":
                     car.setYear((int) value);
-                    break;
-                case "pricePerDay":
-                    car.setPricePerDay(Double.valueOf(value.toString()));
                     break;
                 case "postalCode":
                     car.setPostalCode((int) value);
