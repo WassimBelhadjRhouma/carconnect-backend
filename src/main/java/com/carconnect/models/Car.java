@@ -1,7 +1,17 @@
 package com.carconnect.models;
 
-import jakarta.persistence.*;
 import java.util.Set;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "cars")
@@ -11,14 +21,25 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String title;
+    private String streetAddress;
+    private String city;
+    private String drivingMode;
+    private Number postalCode;
+    private String description;
     private String make;
     private String model;
     private int year;
+    private String fuelType;
     private String licencePlate;
-    private int mileage;
+    private String mileage;
     private double pricePerDay;
-    private String availability;
-    private String location;
+
+
+    // the availability will be considered when the booking functionnality is implemented
+    // private String availability;
+    // location to be updated
+    // private String location;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -44,6 +65,55 @@ public class Car {
         this.id = id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title=title;
+    }
+
+    public String getDrivingMode() {
+        return drivingMode;
+    }
+    public void setDrivingMode(String drivingMode) {
+        this.drivingMode=drivingMode;
+    }
+
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress=streetAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+    public void setCity(String city) {
+        this.city=city;
+    }
+
+    public Number getPostalCode() {
+        return postalCode;
+    }
+    public void setPostalCode(Number postalCode) {
+        this.postalCode=postalCode;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFuelType() {
+        return fuelType;
+    }
+
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
     public String getMake() {
         return make;
     }
@@ -76,11 +146,11 @@ public class Car {
         this.licencePlate = licencePlate;
     }
 
-    public int getMileage() {
+    public String getMileage() {
         return mileage;
     }
 
-    public void setMileage(int mileage) {
+    public void setMileage(String mileage) {
         this.mileage = mileage;
     }
 
@@ -92,21 +162,21 @@ public class Car {
         this.pricePerDay = pricePerDay;
     }
 
-    public String getAvailability() {
-        return availability;
-    }
+    // public String getAvailability() {
+    //     return availability;
+    // }
 
-    public void setAvailability(String availability) {
-        this.availability = availability;
-    }
+    // public void setAvailability(String availability) {
+    //     this.availability = availability;
+    // }
 
-    public String getLocation() {
-        return location;
-    }
+    // public String getLocation() {
+    //     return location;
+    // }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+    // public void setLocation(String location) {
+    //     this.location = location;
+    // }
 
     public User getOwner() {
         return owner;
@@ -148,3 +218,6 @@ public class Car {
         this.reportCheckAfter = reportCheckAfter;
     }
 }
+
+
+
