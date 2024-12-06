@@ -3,6 +3,7 @@ package com.carconnect.dto.filters;
 public class CarFilterDTO {
     private String make;
     private String model;
+    private String fuelType;
     private String drivingMode;
     private Double minPrice;
     private Double maxPrice;
@@ -13,6 +14,12 @@ public class CarFilterDTO {
     }
     public void setMake(String make) {
         this.make = make;
+    }
+    public String getFuelType() {
+        return fuelType;
+    }
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
     }
     public String getModel() {
         return model;
