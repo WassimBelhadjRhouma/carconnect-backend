@@ -4,11 +4,10 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication
 public class CarconnectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CarconnectApplication.class, args);
 	}
-
 }

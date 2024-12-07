@@ -29,11 +29,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PostMapping  // Maps to POST /api/users
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        return ResponseEntity.ok(userService.createUser(user));
-    }
-
     @PutMapping("/{id}")  // Maps to PUT /api/users/{id}
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         return ResponseEntity.ok(userService.updateUser(id, user));

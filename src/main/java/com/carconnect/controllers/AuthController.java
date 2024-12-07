@@ -7,6 +7,7 @@ import com.carconnect.services.AuthService;
 import com.carconnect.services.UserService;
 import com.carconnect.utils.JwtUtil;
 import com.carconnect.utils.PasswordUtil;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +45,15 @@ public class AuthController {
         User user = userOptional.get();
         LoginResponse response = authService.authenticateUser(user);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody User user) {
+        try {
+            User createdUser = userService.createUser(user);
+            return ResponseEntity.ok(Map.of("message", "User registered successfully", "user", createdUser));
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+        }
     }
 }

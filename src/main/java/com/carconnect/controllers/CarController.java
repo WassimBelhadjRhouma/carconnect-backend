@@ -45,7 +45,7 @@ public class CarController {
     }
 
     @PatchMapping("/{id}")
-public ResponseEntity<CarProjection> updateCarPartially(@PathVariable("id") Long id, @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<CarProjection> updateCarPartially(@PathVariable("id") Long id, @RequestBody Map<String, Object> updates) {
     CarProjection updatedCar = carService.updateCarPartially(id, updates);
     return ResponseEntity.ok(updatedCar);
 }
