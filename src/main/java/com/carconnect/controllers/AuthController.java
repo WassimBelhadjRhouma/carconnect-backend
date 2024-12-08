@@ -50,8 +50,8 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody User user) {
         try {
-            User createdUser = userService.createUser(user);
-            return ResponseEntity.ok(Map.of("message", "User registered successfully", "user", createdUser));
+            userService.createUser(user);
+            return ResponseEntity.ok(Map.of("message", "User registered successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
         }

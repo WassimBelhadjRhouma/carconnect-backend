@@ -40,16 +40,20 @@ public class CarController {
     }
 
     @PostMapping
-    public ResponseEntity<Car> createCar(@RequestBody Car car) {
-        return ResponseEntity.ok(carService.createCar(car));
+    public ResponseEntity<?> createCar(@RequestBody Car car) {
+        try {
+            carService.createCar(car);
+            return ResponseEntity.ok(Map.of("message", "Car created successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+        }
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<CarProjection> updateCarPartially(@PathVariable("id") Long id, @RequestBody Map<String, Object> updates) {
     CarProjection updatedCar = carService.updateCarPartially(id, updates);
     return ResponseEntity.ok(updatedCar);
-}
-
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCar(@PathVariable("id") Long id) {

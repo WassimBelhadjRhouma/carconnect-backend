@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "cars")
@@ -41,6 +42,7 @@ public class Car {
     // location to be updated
     // private String location;
 
+    @NotNull(message = "Owner cannot be null")
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
