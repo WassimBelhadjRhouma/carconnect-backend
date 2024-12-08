@@ -13,6 +13,8 @@ import com.carconnect.models.Car;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
 
+  List<Car> findByOwnerId(Long ownerId);
+
   @Query("SELECT c FROM Car c WHERE c.id = :id")
     CarProjection findCarById(@Param("id") Long id);   
 

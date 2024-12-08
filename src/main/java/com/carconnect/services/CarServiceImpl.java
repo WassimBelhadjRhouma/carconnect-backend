@@ -25,6 +25,10 @@ public class CarServiceImpl implements CarService {
          return carRepository.findCarsWithFilters(make,fuelType, model, drivingMode, minPrice, maxPrice);
     }
 
+    public List<Car> getAllCarsByUserId(Long userId) {
+        return carRepository.findByOwnerId(userId);
+    }
+
     @Override
     public CarProjection getCarById(Long id) {
         return carRepository.findCarById(id);
@@ -35,10 +39,20 @@ public class CarServiceImpl implements CarService {
         return carRepository.save(car);
     }
 
+    public List<Car> getCarsByUserId(Long userId) {
+        return carRepository.findByOwnerId(userId);
+    }
 
     @Override
-    public void deleteCar(Long id) {
-        carRepository.deleteById(id);
+    public void deleteCar(Long carId, Long ownerId) {
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new IllegalArgumentException("Car not found with ID: " + carId));
+
+        if (!car.getOwner().getId().equals(ownerId)) {
+            throw new SecurityException("Only the owner can delete this car.");
+        }
+
+        carRepository.delete(car);
     }
 
     @Override
@@ -49,12 +63,12 @@ public class CarServiceImpl implements CarService {
         updates.forEach((key, value) -> {
             switch (key) {
                 case "pricePerDay":
-                car.setPricePerDay(Double.valueOf(value.toString()));
-                break;
+                    car.setPricePerDay(Double.valueOf(value.toString()));
+                    break;
                 case "title":
                     car.setTitle((String) value);
                     break;
-                    case "description":
+                case "description":
                     car.setDescription((String) value);
                     break;
                 case "make":
@@ -78,6 +92,22 @@ public class CarServiceImpl implements CarService {
         });
 
         carRepository.save(car);
-        return carRepository.findCarById(id); 
+        return carRepository.findCarById(id);
     }
+
+    public Car updateCar(Long carId, Car updatedCar, Long ownerId) {
+        Car existingCar = carRepository.findById(carId)
+                .orElseThrow(() -> new IllegalArgumentException("Car not found with ID: " + carId));
+
+        if (!existingCar.getOwner().getId().equals(ownerId)) {
+            throw new SecurityException("Only the owner can update this car.");
+        }
+
+        existingCar.setMake(updatedCar.getMake());
+        existingCar.setModel(updatedCar.getModel());
+        //TODO: add all changeable details
+
+        return carRepository.save(existingCar);
+    }
+
 }

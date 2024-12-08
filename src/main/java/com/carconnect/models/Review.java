@@ -17,7 +17,7 @@ public class Review {
     private int rating;
     private LocalDate submittedAt;
 
-    @NotNull(message = "Owner cannot be null")
+    @NotNull(message = "user cannot be null")
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

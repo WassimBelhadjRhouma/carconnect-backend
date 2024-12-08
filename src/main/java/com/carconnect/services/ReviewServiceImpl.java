@@ -4,6 +4,8 @@ import com.carconnect.models.Review;
 import com.carconnect.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -26,8 +28,13 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findById(id).orElse(null);
     }
 
+    public List<Review> getAllReviewsByCarId(Long carId) {
+        return reviewRepository.findByCarId(carId);
+    }
+
     @Override
     public Review createReview(Review review) {
+        review.setSubmittedAt(LocalDate.now());
         return reviewRepository.save(review);
     }
 

@@ -2,17 +2,13 @@ package com.carconnect.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.carconnect.dto.CarDTO;
+import com.carconnect.mappers.CarMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.carconnect.dto.filters.CarFilterDTO;
 import com.carconnect.dto.projection.CarProjection;
@@ -23,10 +19,12 @@ import com.carconnect.services.CarService;
 @RequestMapping("/api/cars")
 public class CarController {
     private final CarService carService;
+    private final CarMapper carMapper;
 
     @Autowired
-    public CarController(CarService carService) {
+    public CarController(CarService carService, CarMapper carMapper) {
         this.carService = carService;
+        this.carMapper = carMapper;
     }
 
     @PostMapping("/filter")
@@ -37,6 +35,15 @@ public class CarController {
     @GetMapping("/{id}")
     public ResponseEntity<CarProjection> getCarById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(carService.getCarById(id));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<CarDTO>> getCarsByUserId(@PathVariable Long userId) {
+        List<Car> cars = carService.getCarsByUserId(userId);
+        List<CarDTO> carDTOs = cars.stream()
+                .map(carMapper::toCarDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(carDTOs);
     }
 
     @PostMapping
@@ -51,13 +58,23 @@ public class CarController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<CarProjection> updateCarPartially(@PathVariable("id") Long id, @RequestBody Map<String, Object> updates) {
-    CarProjection updatedCar = carService.updateCarPartially(id, updates);
-    return ResponseEntity.ok(updatedCar);
+        CarProjection updatedCar = carService.updateCarPartially(id, updates);
+        return ResponseEntity.ok(updatedCar);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCar(@PathVariable("id") Long id) {
-        carService.deleteCar(id);
+    @DeleteMapping("/{carId}")
+    public ResponseEntity<Void> deleteCar(@PathVariable Long carId, @RequestParam Long userId) {
+        carService.deleteCar(carId, userId);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{carId}")
+    public ResponseEntity<CarDTO> updateCar(
+            @PathVariable Long carId,
+            @RequestBody CarDTO updatedCarDTO,
+            @RequestParam Long userId) {
+        Car updatedCar = carService.updateCar(carId, carMapper.toCarEntity(updatedCarDTO), userId);
+        return ResponseEntity.ok(carMapper.toCarDTO(updatedCar));
+    }
+
 }
