@@ -47,12 +47,28 @@ public class BookingServiceImpl implements BookingService {
         return null;
     }
 
-    public BookingDTO updateBookingStatus(Long bookingId, BookingStatus newStatus, Long ownerId) {
+    public BookingDTO updateBookingStatus(Long bookingId, BookingStatus newStatus, Long userId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found with ID: " + bookingId));
 
-        if (!booking.getCar().getOwner().getId().equals(ownerId)) {
-            throw new SecurityException("Only the owner can update the booking status.");
+        Long ownerId = booking.getCar().getOwner().getId();
+        Long renterId = booking.getRenter().getId();
+
+        if (ownerId.equals(userId)) {
+            if (newStatus == BookingStatus.ACCEPTED || newStatus == BookingStatus.REFUSED) {
+                booking.setStatus(newStatus);
+            } else {
+                throw new SecurityException("Owner can only accept or refuse a booking.");
+            }
+        }
+        else if (renterId.equals(userId)) {
+            if (newStatus == BookingStatus.CANCELLED) {
+                booking.setStatus(newStatus);
+            } else {
+                throw new SecurityException("Renter can only cancel a booking.");
+            }
+        } else {
+            throw new SecurityException("You are not authorized to update this booking.");
         }
 
         booking.setStatus(newStatus);
